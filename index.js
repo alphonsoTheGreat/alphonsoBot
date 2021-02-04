@@ -4,6 +4,11 @@ const secrets = require('./secret.json')
 const bot = new Telegraf(secrets.token);
 const PORT = process.env.PORT || 3000;
 
+const logger = (message)=>{
+  console.log("INFO :: EVENT :: "+message)
+}
+logger("port: "+PORT)
+
 // bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.hears('a', (ctx) => ctx.reply('hear'))
 bot.hears('ido', (ctx) => ctx.reply('is too beautifull'))
@@ -21,6 +26,10 @@ bot.launch()
 
 
 
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
-
+process.once('SIGINT', () => {
+    logger("SIGINT")
+    bot.stop('SIGINT')})
+process.once('SIGTERM', () => {
+    logger("SIGTERM")
+    bot.stop('SIGTERM')
+})
