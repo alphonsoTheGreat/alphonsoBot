@@ -1,7 +1,9 @@
 const { Telegraf } = require('telegraf')
 const secrets = require('./secret.json')
 
-const bot = new Telegraf(secrets.token)
+const bot = new Telegraf(secrets.token);
+const PORT = process.env.PORT || 3000;
+
 // bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.hears('a', (ctx) => ctx.reply('hear'))
 // bot.hears('b', (ctx) => ctx.reply('b hear'))
