@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 // bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.hears('a', (ctx) => ctx.reply('hear'))
+bot.hears('ido', (ctx) => ctx.reply('is too beautifull'))
 // bot.hears('b', (ctx) => ctx.reply('b hear'))
 bot.command('b', (ctx) => ctx.reply('command'))
 
