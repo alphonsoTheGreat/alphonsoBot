@@ -4,12 +4,12 @@ const secrets = require('./secret.json')
 const bot = new Telegraf(secrets.token);
 
 var PORT = process.env.PORT || 8443;
-var HOST = process.env.HOST;
+
 const logger = (message)=>{
   console.log("INFO :: EVENT :: "+message)
 }
 logger("port: "+PORT)
-logger("hostt: "+HOST)
+
 
 // bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.hears('a', (ctx) => ctx.reply('hear'))
@@ -22,6 +22,10 @@ bot.start((ctx) => ctx.reply('Welcome'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 
 
+bot.telegram.setWebhook('https://-----.localtunnel.me/secret-path')
+
+// Start https webhook
+bot.startWebhook('/secret-path', null, PORT)
 
 // bot.command("b")
 bot.launch()
