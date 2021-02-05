@@ -5,8 +5,8 @@ const expressApp = express()
 const port = process.env.PORT || 5000 // Correct port will be returned here
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
-expressApp.use(bot.webhookCallback('/secret-path'))
-bot.telegram.setWebhook('https://MY-APP.heroku.com/secret-path')
+expressApp.use(bot.webhookCallback('/itamir'))
+bot.telegram.setWebhook('https://alphonsobot.herokuapp.com/itamir')
 
 expressApp.get('/', (req, res) => {
   res.send('Hello World!')
