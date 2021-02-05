@@ -2,12 +2,14 @@ const { Telegraf } = require('telegraf')
 const secrets = require('./secret.json')
 
 const bot = new Telegraf(secrets.token);
-const PORT = process.env.PORT || 3000;
 
+var PORT = process.env.PORT || 8443;
+var HOST = process.env.HOST;
 const logger = (message)=>{
   console.log("INFO :: EVENT :: "+message)
 }
 logger("port: "+PORT)
+logger("hostt: "+HOST)
 
 // bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.hears('a', (ctx) => ctx.reply('hear'))
