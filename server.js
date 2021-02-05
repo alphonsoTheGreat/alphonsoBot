@@ -1,24 +1,17 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const packageInfo = require('./package.json');
+const Telegraf = require('telegraf')
+const express = require('express')
+const expressApp = express()
 
+const port = process.env.PORT || 5000 // Correct port will be returned here
+const bot = new Telegraf(process.env.BOT_TOKEN)
 
-const app = express();
-app.use(bodyParser.json());
+expressApp.use(bot.webhookCallback('/secret-path'))
+bot.telegram.setWebhook('https://MY-APP.heroku.com/secret-path')
 
-app.get('/', function (req, res) {
-  res.json({ version: packageInfo.version });
-});
+expressApp.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
-var server = app.listen(process.env.PORT, "0.0.0.0", () => {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log('Web server started at http://%s:%s', host, port);
-});
-
-module.exports = (bot) => {
-  app.post('/' + bot.token, (req, res) => {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-  });
-};
+expressApp.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`)
+})
