@@ -11,6 +11,18 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 
 bot.telegram.setWebhook('https://alphonsobot.herokuapp.com/bot-hook')
 
+
+expressApp.use( (req, res,next) => {
+  console.log("---------------------body ------")
+  console.log(req.body)
+  console.log("---------------------query ------")
+  console.log(req.query)
+  console.log("---------------------params ------")
+  console.log(req.params)
+  console.log("---------------------headers ------")
+  console.log(req.headers)
+  next()
+})
 expressApp.use(bot.webhookCallback('/bot-hook'))
 
 bot.start((ctx) => ctx.reply('Welcome'))
@@ -24,8 +36,8 @@ expressApp.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-expressApp.post('/bot-hook', (req, res) => {
-  console.log("---------------------body ------")
+expressApp.post('/bot-hook', (req, res,next) => {
+  console.log("****--------------------body ------")
   console.log(req.body)
   console.log("---------------------query ------")
   console.log(req.query)
