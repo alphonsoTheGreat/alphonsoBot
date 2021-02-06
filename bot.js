@@ -1,6 +1,6 @@
 module.exports = {
   
-  init:(bot)=>{
+  runBot:(bot)=>{
       
     bot.start((ctx) => ctx.reply('Welcome'))
     bot.help((ctx) => ctx.reply('i still not sure what i do . . . '))
