@@ -13,7 +13,12 @@ bot.telegram.setWebhook('https://alphonsobot.herokuapp.com/itamir')
 
 expressApp.use(bot.webhookCallback('/itamir'))
 
-bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
+bot.start((ctx) => ctx.reply('Welcome'))
+bot.help((ctx) => ctx.reply('Send me a sticker'))
+bot.on('sticker', (ctx) => ctx.reply('👍'))
+bot.hears('hi', (ctx) => ctx.reply('Hey there'))
+
+
 
 expressApp.get('/', (req, res) => {
   res.send('Hello World!')
