@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"npm install && node server.js"
+    "bot":"node bot.js",
+    "server":"node server.js",
+    "start":"npm run bot"
   },
   "author": "",
   "license": "ISC",
