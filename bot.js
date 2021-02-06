@@ -1,13 +1,11 @@
-const {Telegraf} = require('telegraf');
+module.exports = {
+  
+  init:(bot)=>{
+      
+    bot.start((ctx) => ctx.reply('Welcome'))
+    bot.help((ctx) => ctx.reply('i still not sure what i do . . . '))
+    bot.on('sticker', (ctx) => ctx.reply('👍'))
+    bot.hears('hi', (ctx) => ctx.reply('Hey there');
+  }
 
-const API_TOKEN = process.env.BOT_TOKEN || '';
-const PORT = process.env.PORT || 3000;
-const URL ='https://alphonsobot.herokuapp.com'
-
-const bot = new Telegraf(API_TOKEN);
-bot.telegram.setWebhook(`${URL}/bot${API_TOKEN}`);
-bot.startWebhook(`/bot${API_TOKEN}`, null, PORT);
-
-bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
-
-
+}
