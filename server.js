@@ -15,7 +15,7 @@ bot.telegram.setWebhook('https://alphonsobot.herokuapp.com/bot-hook')
 // set our webhook
 expressApp.use(bot.webhookCallback('/bot-hook'))
 
-botService.init()
+botService.init(bot)
 
 
 expressApp.listen(port, () => {
