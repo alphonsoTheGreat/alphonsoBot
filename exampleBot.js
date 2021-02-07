@@ -1,37 +1,40 @@
+// Modules documentation: https://telegraf.js.org/#/?id=telegraf-modules
+// $> telegraf -t `BOT TOKEN` echo-bot-module.js
+const {Composer,Extra,Markup} = require('telegraf')
+// const Extra = require('telegraf/extra')
+// const Markup = require('telegraf/markup')
 
-const Markup = require('telegraf/markup')
-const fetch = require('node-fetch')
+const keyboard = Markup.inlineKeyboard([
+  Markup.urlButton('❤️', 'http://telegraf.js.org'),
+  Markup.callbackButton('Delete', 'delete')
+])
 
+const bot = new Composer()
+bot.start((ctx) => ctx.replyWithDice())
+bot.settings(async (ctx) => {
+  await ctx.setMyCommands([
+    {
+      command: '/foo',
+      description: 'foo description'
+    },
+    {
+      command: '/bar',
+      description: 'bar description'
+    },
+    {
+      command: '/baz',
+      description: 'baz description'
+    }
+  ])
+  return ctx.reply('Ok')
+})
+bot.help(async (ctx) => {
+  const commands = await ctx.getMyCommands()
+  const info = commands.reduce((acc, val) => `${acc}/${val.command} - ${val.description}\n`, '')
+  return ctx.reply(info)
+})
+bot.action('delete', ({ deleteMessage }) => deleteMessage())
+bot.on('dice', (ctx) => ctx.reply(`Value: ${ctx.message.dice.value}`))
+bot.on('message', (ctx) => ctx.telegram.sendCopy(ctx.chat.id, ctx.message, Extra.markup(keyboard)))
 
-
-module.exports = {
-
-  runBot:(bot)=>{
-
-    bot.on('inline_query', async ({ inlineQuery, answerInlineQuery }) => {
-      const apiUrl = `http://recipepuppy.com/api/?q=${inlineQuery.query}`
-      const response = await fetch(apiUrl)
-      const { results } = await response.json()
-      const recipes = results
-        .filter(({ thumbnail }) => thumbnail)
-        .map(({ title, href, thumbnail }) => ({
-          type: 'article',
-          id: thumbnail,
-          title: title,
-          description: title,
-          thumb_url: thumbnail,
-          input_message_content: {
-            message_text: title
-          },
-          reply_markup: Markup.inlineKeyboard([
-            Markup.urlButton('Go to recipe', href)
-          ])
-        }))
-      return answerInlineQuery(recipes)
-    })
-
-      bot.on('chosen_inline_result', ({ chosenInlineResult }) => {
-      console.log('chosen inline result', chosenInlineResult)
-    })
-  }
-}
+module.exports = bot
