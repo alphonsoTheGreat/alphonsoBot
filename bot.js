@@ -19,7 +19,7 @@ module.exports = {
   runBot:(bot)=>{
     
     bot.use(logReqInfo);
-    bot.on('text',(ctx)=>ctx.reply(ctx.message.from.username));
+    bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello from example!</b>'))
     
     bot.start((ctx) => ctx.reply('Welcome'))
     bot.help((ctx) => ctx.reply('i still not sure what i do . . . '))
