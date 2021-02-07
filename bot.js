@@ -4,9 +4,7 @@ const textMiddleware = (ctx,next) => {
   next()
 }
 
-const responseWithTextMiddleware =(text)=> (ctx) => {
-  ctx.replay(text)
-}
+const responseWithTextMiddleware =(text)=> (ctx) =>   ctx.replay(text)
 
 
 
