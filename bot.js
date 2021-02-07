@@ -1,3 +1,6 @@
+const { Telegraf, Markup } = require('telegraf')
+
+
 
 const logReqInfo = (ctx,next) => {
   console.log("================================")
@@ -17,7 +20,7 @@ const logReqInfo = (ctx,next) => {
 module.exports = {
   
   runBot:(bot)=>{
-    
+    bot.use(Telegraf.log())
     bot.use(logReqInfo);
     bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello from example!</b>'))
     
