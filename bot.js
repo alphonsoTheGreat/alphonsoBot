@@ -1,4 +1,4 @@
-const textMiddleware = (ctx) => ctx.reply('this is a text middleware'))
+const textMiddleware = (ctx) => ctx.reply('this is a text middleware')
 
 
 
