@@ -2,15 +2,15 @@
 
 
 
-const {Markup} = require('telegraf')
+const { Markup } = require('telegraf')
 const fetch = require('node-fetch')
 
-module.exports={
+module.exports = {
 
-  runBot:(bot)=>{
-    
+  runBot: (bot) => {
+
     bot.command('onetime', (ctx) =>
-      ctx.reply('One time keyboard', Markup
+      ctx.reply('Osne time keyboard', Markup
         .keyboard(['/simple', '/inline', '/pyramid'])
         .oneTime()
         .resize()
@@ -128,8 +128,8 @@ module.exports={
       return ctx.answerCbQuery(`Oh, ${ctx.match[0]}! Great choice`)
     })
 
-    
-    
-  
+
+
+
   }
 }
