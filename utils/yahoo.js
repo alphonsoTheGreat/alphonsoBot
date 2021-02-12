@@ -34,7 +34,7 @@ module.exports = class YahooClient {
         axios.get({
             method: 'GET',
             headers,
-            url,
+            url: url.toString(),
         })
             .then(data => {
                 logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")

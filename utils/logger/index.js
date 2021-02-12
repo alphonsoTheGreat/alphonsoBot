@@ -1,12 +1,12 @@
 module.exports = {
     INFO: (placeHolder, message) => {
-        const date = new Date()
+        // const date = new Date()
 
-        console.log("[" + date + "][INFO][" + placeHolder + "][" + message + "]")
+        console.log("[INFO][" + placeHolder + "][" + message + "]")
     },
     ERROR: (placeHolder, error) => {
 
-        const date = new Date()
-        console.log("[" + date + "][ERROR][" + placeHolder + "][" + error + "]")
+        // const date = new Date()
+        console.log("[ERROR][" + placeHolder + "][" + error + "]")
     },
 }

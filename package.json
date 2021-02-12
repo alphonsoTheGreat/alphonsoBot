@@ -10,8 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bot": "node bot.js",
     "server": "node server.js",
-    "dev:bot": "node index.js",
-    "start": "npm run server"
+    "dev:bot": "node index.ignore.js",
+    "start": "npm run server",
+    "heroku:logs": " heroku logs -a alphonsobot"
   },
   "author": "",
   "license": "ISC",
