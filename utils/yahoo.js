@@ -56,7 +56,7 @@ module.exports = class YahooClient {
     }
 
 
-    getSymbolData(symbol) {
+    getSymbolData(symbol, cb) {
         try {
 
             logger.INFO(PLACEHOLDER, "in symbolData for symbol:" + symbol)
@@ -76,14 +76,14 @@ module.exports = class YahooClient {
                         [symbol]: pickedData
                     }
                     logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
-                    return this.stockData[symbol]
+                    return cb(this.stockData[symbol])
 
 
 
                 })
             }
             else
-                return this.stockData[symbol]
+                return cb(this.stockData[symbol])
 
         }
         catch (e) {

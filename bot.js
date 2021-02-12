@@ -33,9 +33,13 @@ module.exports = {
     })
     bot.hears("fetch symbol (GOOG)", ctx => {
 
-      const data = yahooClient.getSymbolData("GOOG");
+      yahooClient.getSymbolData("GOOG", function (data) {
+        return ctx.reply(JSON.stringify(data))
+      });
 
-      return ctx.reply(JSON.stringify(data))
+
+
+      // return ctx.reply(JSON.stringify(data))
 
     })
   }
