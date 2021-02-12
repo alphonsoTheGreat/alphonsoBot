@@ -12,7 +12,7 @@
     "server": "node server.js",
     "dev:bot": "node index.ignore.js",
     "start": "npm run server",
-    "heroku:logs": " heroku logs -a alphonsobot"
+    "heroku:logs": " heroku logs -a alphonsobot -t"
   },
   "author": "",
   "license": "ISC",
