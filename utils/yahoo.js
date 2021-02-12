@@ -46,12 +46,12 @@ module.exports = class YahooClient {
                     cb(data)
                 })
                 .catch(function (e) {
-                    logger.ERROR(PLACEHOLDER, e.message)
+                    logger.ERROR(PLACEHOLDER, e)
 
                 })
         }
         catch (e) {
-            logger.ERROR(PLACEHOLDER, e.message)
+            logger.ERROR(PLACEHOLDER, e)
         }
     }
 
@@ -87,7 +87,7 @@ module.exports = class YahooClient {
 
         }
         catch (e) {
-            logger.ERROR(PLACEHOLDER, e.message)
+            logger.ERROR(PLACEHOLDER, e)
         }
     }
 
