@@ -11,7 +11,7 @@ const PLACEHOLDER = "yahoo.js"
 // ===============================================================
 
 // A base class is defined using the new reserved 'class' keyword
-export default class YahooClient {
+module.exports = class YahooClient {
     // ..and an (optional) custom class constructor. If one is
     // not supplied, a default constructor is used instead:
     // constructor() { }

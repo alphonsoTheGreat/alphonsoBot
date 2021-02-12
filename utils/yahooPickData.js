@@ -136,7 +136,7 @@ module.exports = {
 
         consts: {
 
-            rowValueMap = {
+            rowValueMap: {
                 FCS_CAP: "FCS_CAP",
                 FCS_earningsAvg: "FCS_earningsAvg",
                 PE: "PE",
