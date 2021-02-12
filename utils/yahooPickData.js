@@ -103,8 +103,7 @@ module.exports = {
 
 
         buildSymbolStats: function (symbolData) {
-
-            const PE = extractPE(symbolData);
+            const PE = this.extractPE(symbolData);
 
             const earningsCalc = extractEarnings(symbolData);
 
