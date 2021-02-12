@@ -25,16 +25,16 @@ module.exports = class YahooClient {
 
 
     callApi_get_cash_flow(symbol, cb) {
-        const url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=GOOG&region=US"
+        // const url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=GOOG&region=US"
         const headers = {
             "x-rapidapi-host": this.rapidApiHost,
             "x-rapidapi-key": this.rapidApiKey,
             "useQueryString": true
         }
         axios.get({
-            method: 'GET',
+            method: 'get',
             headers,
-            url: url.toString(),
+            url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=GOOG&region=US"
         })
             .then(data => {
                 logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")
