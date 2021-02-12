@@ -31,7 +31,7 @@ module.exports = class YahooClient {
             "x-rapidapi-key": this.rapidApiKey,
             "useQueryString": true
         }
-        axios.get({
+        axios({
             method: 'get',
             headers,
             url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=GOOG&region=US"
