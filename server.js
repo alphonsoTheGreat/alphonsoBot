@@ -1,7 +1,7 @@
-const {Telegraf}  = require('telegraf')
+const { Telegraf } = require('telegraf')
 const express = require('express')
-// const botService = require('./bot.js')
-const botService = require('./exampleBot.js')
+const botService = require('./bot.js')
+// const botService = require('./exampleBot.js')
 
 const expressApp = express()
 
