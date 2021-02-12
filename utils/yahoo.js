@@ -41,11 +41,11 @@ module.exports = class YahooClient {
                         "useQueryString": true
                     }
                 })
-                .then(data => {
+                .then(function (data) {
                     logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")
                     cb(data)
                 })
-                .catch(e => {
+                .catch(function (e) {
                     logger.ERROR(PLACEHOLDER, e.message)
 
                 })
@@ -62,7 +62,7 @@ module.exports = class YahooClient {
             logger.INFO(PLACEHOLDER, "in symbolData for symbol:" + symbol)
 
             if (Object.keys(this.stockData).indexOf(symbol) < 0) {
-                this.callApi_get_cash_flow(symbol, (data) => {
+                this.callApi_get_cash_flow(symbol, function (data) {
 
 
                     let jsonObject = data;
