@@ -1,33 +1,43 @@
 const { Telegraf, Markup } = require('telegraf')
+const YahooClient = require('./utils/yahoo')
 
+const xRapidapiHost = "apidojo-yahoo-finance-v1.p.rapidapi.com";
+const xRapidapiKey = "6c15d749bbmsh90b56ad172bf4b6p1d3d99jsnfd144084ef7d";
 
-
-const logReqInfo = (ctx,next) => {
-  console.log("================================")
-  console.log({
-    message:ctx.message,
-    userInfo:ctx.from,
-    type:ctx.updateType,
-    updateSubTypes:ctx.updateSubTypes
-  })
-  console.log("================================")
-  next()
-}
-
-
+const yahooClient = new YahooClient(xRapidapiKey, xRapidapiHost)
 
 
 module.exports = {
-  
-  runBot:(bot)=>{
-    bot.use(Telegraf.log())
-    bot.use(logReqInfo);
-    bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello from example!</b>'))
-    
-    bot.start((ctx) => ctx.reply('Welcome'))
-    bot.help((ctx) => ctx.reply('i still not sure what i do . . . '))
-    bot.on('sticker', (ctx) => ctx.reply('👍'))
 
+  runBot: (bot) => {
+
+    bot.use(Telegraf.log())
+
+    bot.command('stock', async (ctx) => {
+      return await ctx.reply('pick action', Markup
+        .keyboard([
+          ['get data', 'fetch symbol (GOOG)']
+        ])
+        .oneTime()
+        .resize()
+      )
+    })
+
+
+
+    bot.hears('get data', ctx => {
+
+      const data = yahooClient.getStocksData();
+
+      return ctx.reply(JSON.stringify(data))
+    })
+    bot.hears("fetch symbol (GOOG)", ctx => {
+
+      const data = yahooClient.getSymbolData("GOOG");
+
+      return ctx.reply(JSON.stringify(data))
+
+    })
   }
 
 }
