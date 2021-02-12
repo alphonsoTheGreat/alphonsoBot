@@ -7,6 +7,6 @@ module.exports = {
     ERROR: (placeHolder, error) => {
 
         // const date = new Date()
-        console.log("[ERROR][" + placeHolder + "][" + error + "]")
+        console.log("[ERROR][" + placeHolder + "][" + error.message + "]" + e.stack)
     },
 }

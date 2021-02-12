@@ -57,28 +57,38 @@ module.exports = class YahooClient {
 
 
     getSymbolData(symbol) {
-        logger.INFO(PLACEHOLDER, "in symbolData for symbol:" + symbol)
+        try {
 
-        if (Object.keys(this.stockData).indexOf(symbol) < 0) {
-            this.callApi_get_cash_flow(symbol, (data) => {
+            logger.INFO(PLACEHOLDER, "in symbolData for symbol:" + symbol)
+
+            if (Object.keys(this.stockData).indexOf(symbol) < 0) {
+                this.callApi_get_cash_flow(symbol, (data) => {
 
 
-                const jsonObject = JSON.parse(data);
+                    let jsonObject = data;
+                    if (typeof jsonObject !== "object")
+                        jsonObject = JSON.parse(data);
 
-                const pickedData = yahooDataPicker.helpers.buildSymbolStats(jsonObject)
-                this.stockData = {
-                    ...this.stockData,
-                    [symbol]: pickedData
-                }
-                logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
+
+                    const pickedData = yahooDataPicker.helpers.buildSymbolStats(jsonObject)
+                    this.stockData = {
+                        ...this.stockData,
+                        [symbol]: pickedData
+                    }
+                    logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
+                    return this.stockData[symbol]
+
+
+
+                })
+            }
+            else
                 return this.stockData[symbol]
 
-
-
-            })
         }
-        else
-            return this.stockData[symbol]
+        catch (e) {
+            logger.ERROR(PLACEHOLDER, e.message)
+        }
     }
 
 
