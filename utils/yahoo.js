@@ -94,6 +94,7 @@ module.exports = class YahooClient {
 
 
     getStocksData() {
+        logger.INFO(PLACEHOLDER, JSON.stringify(this.stockData))
         return this.stockData
     }
 
