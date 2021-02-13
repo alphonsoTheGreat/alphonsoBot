@@ -1,3 +1,5 @@
+const logger = require("./logger")
+const PLACE_HOLDER = "yahooPickData.js"
 const rowValueMap = {
     FCS_CAP: "FCS_CAP",
     FCS_earningsAvg: "FCS_earningsAvg",
@@ -20,99 +22,150 @@ const rowValueMap = {
     free_cash_flow: "free_cash_flow"
 }
 
+
+
+
 const extractPE = (response) => {
-    if (response.summaryDetail.trailingPE)
-        return response.summaryDetail.trailingPE.raw
-    else return "cannot find"
+    try {
+
+        if (response.summaryDetail.trailingPE)
+            return response.summaryDetail.trailingPE.raw
+        else return "n/a"
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+        return "n/a"
+    }
 }
 
 
 
 const extractMarketCap = (response, formatted = true) => {
-    if (response.summaryDetail.marketCap)
-        if (formatted)
-            return response.summaryDetail.marketCap.fmt
-        else return response.summaryDetail.marketCap.raw
-    else return "cannot find"
+    try {
+        if (response.summaryDetail.marketCap)
+            if (formatted)
+                return response.summaryDetail.marketCap.fmt
+            else return response.summaryDetail.marketCap.raw
+        else return "cannot find"
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+
+        return "n/a"
+    }
 }
 
 
 const extractCurrentPrice = (response) => {
-    if (response.price.regularMarketPrice)
-        return response.price.regularMarketPrice.raw
-    else return "cannot find"
+    try {
+        if (response.price.regularMarketPrice)
+            return response.price.regularMarketPrice.raw
+        else return "cannot find"
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+
+        return "n/a"
+    }
 }
 
 
 const extractFreeCashFlow = (response, formatted = true) => {
-    if (response.timeSeries)
-        if (formatted)
-            return response.timeSeries.trailingFreeCashFlow[0].reportedValue.fmt
-        else
-            return response.timeSeries.trailingFreeCashFlow[0].reportedValue.raw
-    else return "cannot find"
+    try {
+        if (response.timeSeries)
+            if (formatted)
+                return response.timeSeries.trailingFreeCashFlow[0].reportedValue.fmt
+            else
+                return response.timeSeries.trailingFreeCashFlow[0].reportedValue.raw
+        else return "cannot find"
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+
+        return "n/a"
+    }
 }
 
 
 const extractEarnings = (responseS) => {
-    if (responseS === undefined) return
+    try {
+        if (responseS === undefined) return
 
-    const earnings = responseS.earnings;
-    if (earnings) {
-        const calc = earnings.financialsChart.quarterly.reduce((prev, q) => {
-            return ({
-                ...prev,
-                [q.date]: {
-                    date: q.date,
-                    earnings: q.earnings.fmt.toString(),
-                    revenue: q.revenue.fmt.toString(),
-                    calc: ((q.earnings.raw / q.revenue.raw))
-                }
-            })
-        }, {})
+        const earnings = responseS.earnings;
+        if (earnings) {
+            const calc = earnings.financialsChart.quarterly.reduce((prev, q) => {
+                return ({
+                    ...prev,
+                    [q.date]: {
+                        date: q.date,
+                        earnings: q.earnings.fmt.toString(),
+                        revenue: q.revenue.fmt.toString(),
+                        calc: ((q.earnings.raw / q.revenue.raw))
+                    }
+                })
+            }, {})
 
-        return calc
+            return calc
+        }
+        else return {}
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+
+        return "n/a"
     }
-    else return {}
-
 
 }
 
 const reduceEarningObject = (earnings) => {
+    try {
+        const earningsKeys = Object.keys(earnings);
 
-    const earningsKeys = Object.keys(earnings);
+        return earningsKeys.reduce((prev, current) => {
 
-    return earningsKeys.reduce((prev, current) => {
+            const Q_data = earnings[current];
+            prev.push({ key: "revenue_" + Q_data.date, value: Q_data.revenue })
+            prev.push({ key: "earnings_" + Q_data.date, value: Q_data.earnings })
+            prev.push({ key: "calc_" + Q_data.date, value: Q_data.calc })
+            return prev
+        }, [])
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
 
-        const Q_data = earnings[current];
-        prev.push({ key: "revenue_" + Q_data.date, value: Q_data.revenue })
-        prev.push({ key: "earnings_" + Q_data.date, value: Q_data.earnings })
-        prev.push({ key: "calc_" + Q_data.date, value: Q_data.calc })
-        return prev
-    }, [])
+        return "n/a"
+    }
 }
 
 const calculateFreeCashFlowOutOfMarketCap = (freeCashFlow, marketCap) => {
-    return (freeCashFlow / marketCap)
+    try {
+        return (freeCashFlow / marketCap)
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+
+        return "n/a"
+    }
 }
 
 const calculateEarnigsAveregOutOfFreeCashFlow = (freeCashFlow, response) => {
-    const earnings = response.earnings;
-    if (earnings) {
-        const calc = earnings.financialsChart.quarterly.reduce((prev, q) => {
-            return ({
-                avarage: ((prev.avarage + q.earnings.raw) / (prev.total + 1)),
-                total: prev.total + 1,
-                accum: prev.avarage + q.earnings.raw
-            })
-        }, { avarage: 0, total: 0 })
-        return (calc.avarage / freeCashFlow)
+    try {
+        const earnings = response.earnings;
+        if (earnings) {
+            const calc = earnings.financialsChart.quarterly.reduce((prev, q) => {
+                return ({
+                    avarage: ((prev.avarage + q.earnings.raw) / (prev.total + 1)),
+                    total: prev.total + 1,
+                    accum: prev.avarage + q.earnings.raw
+                })
+            }, { avarage: 0, total: 0 })
+            return (calc.avarage / freeCashFlow)
 
+        }
+
+
+
+        const earningsAvg = earnings;
+
+
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+
+        return "n/a"
     }
-
-
-
-    const earningsAvg = earnings
 }
 
 
