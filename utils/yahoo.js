@@ -41,7 +41,8 @@ module.exports = class YahooClient {
                         "useQueryString": true
                     }
                 })
-                .then(function (data) {
+                .then(function ({ data }) {
+
                     logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")
                     cb(data)
                 })
