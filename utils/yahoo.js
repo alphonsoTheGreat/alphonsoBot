@@ -19,7 +19,6 @@ module.exports = class YahooClient {
         this.rapidApiKey = rapidApiKey;
         this.rapidApiHost = rapidApiHost;
         this.stockData = {
-
         }
     }
 
@@ -33,7 +32,9 @@ module.exports = class YahooClient {
             //     "x-rapidapi-key": this.rapidApiKey,
             //     "useQueryString": true
             // }
-            axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=GOOG&region=US",
+
+
+            axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US",
                 {
                     headers: {
                         "x-rapidapi-host": this.rapidApiHost,
@@ -62,31 +63,30 @@ module.exports = class YahooClient {
 
             logger.INFO(PLACEHOLDER, "in symbolData for symbol:" + symbol)
 
-            // if (Object.keys(this.stockData).indexOf(symbol) < 0) {
-            this.callApi_get_cash_flow(symbol, function (data) {
+            if (Object.keys(this.stockData).indexOf(symbol) < 0) {
+                this.callApi_get_cash_flow(symbol, (data) => {
 
 
-                let jsonObject = data;
-                if (typeof jsonObject !== "object")
-                    jsonObject = JSON.parse(data);
+                    let jsonObject = data;
+                    if (typeof jsonObject !== "object")
+                        jsonObject = JSON.parse(data);
+
+                    const pickedData = yahooDataPicker.buildSymbolStats(jsonObject)
+                    this.stockData = {
+                        ...this.stockData,
+                        [symbol]: pickedData
+                    }
+                    // logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(pickedData))
+                    // logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
+                    return cb(pickedData)
+                    // return cb(this.stockData[symbol])
 
 
-                const pickedData = yahooDataPicker.buildSymbolStats(jsonObject)
-                // this.stockData = {
-                //     ...this.stockData,
-                //     [symbol]: pickedData
-                // }
-                logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(pickedData))
-                // logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
-                return cb(pickedData)
-                // return cb(this.stockData[symbol])
 
-
-
-            })
-            // }
-            // else
-            // return cb(this.stockData[symbol])
+                })
+            }
+            else
+                return cb(this.stockData[symbol])
 
         }
         catch (e) {
@@ -97,8 +97,17 @@ module.exports = class YahooClient {
 
 
     getStocksData() {
-        logger.INFO(PLACEHOLDER, JSON.stringify(this.stockData))
+        // logger.INFO(PLACEHOLDER, JSON.stringify(this.stockData))
         return this.stockData
+    }
+
+    pretty(data) {
+        let keyValue = data.map(({ key, value }) => {
+            return key + ": " + value
+
+        })
+        return keyValue.join("\n")
+
     }
 
 

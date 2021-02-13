@@ -35,8 +35,8 @@ module.exports = {
     bot.hears("fetch symbol (GOOG)", ctx => {
 
       yahooClient.getSymbolData("GOOG", function (data) {
-        logger.INFO(PLACEHOLDER, data)
-        return ctx.reply(JSON.stringify(data))
+        // logger.INFO(PLACEHOLDER, data)
+        return ctx.reply(yahooClient.pretty(data))
       });
 
 
@@ -44,6 +44,18 @@ module.exports = {
       // return ctx.reply(JSON.stringify(data))
 
     })
+
+
+
+    bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
+
+      // logger.INFO(PLACEHOLDER, ctx.)
+      return ctx.reply("ok")
+
+    })
+
+
+
   }
 
 }

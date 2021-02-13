@@ -170,8 +170,8 @@ const calculateEarnigsAveregOutOfFreeCashFlow = (freeCashFlow, response) => {
 
 
 const buildSymbolStats = (symbolData) => {
-    logger.INFO(PLACE_HOLDER, JSON.stringify(symbolData))
-    logger.INFO(PLACE_HOLDER, symbolData)
+    // logger.INFO(PLACE_HOLDER, JSON.stringify(symbolData))
+    // logger.INFO(PLACE_HOLDER, symbolData)
 
 
     const PE = extractPE(symbolData);
