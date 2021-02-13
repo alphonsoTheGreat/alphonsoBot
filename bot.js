@@ -49,7 +49,8 @@ module.exports = {
 
     // bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
     // bot.hears(/\analyze: [A-Z]+\w+/, ctx => {
-    bot.hears(/analyze: [A-Z]/g, ctx => {
+    const reg = RegExp(/analyze: [A-Z]/g)
+    bot.hears(reg, ctx => {
 
       logger.INFO(PLACEHOLDER, "regex:1")
 
