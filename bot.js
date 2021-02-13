@@ -1,6 +1,7 @@
-const { Telegraf, Markup } = require('telegraf')
+const { Telegraf, Markup } = require('telegraf');
+const logger = require('./utils/logger');
 const YahooClient = require('./utils/yahoo')
-
+const PLACEHOLDER = "bot.js"
 const xRapidapiHost = "apidojo-yahoo-finance-v1.p.rapidapi.com";
 const xRapidapiKey = "6c15d749bbmsh90b56ad172bf4b6p1d3d99jsnfd144084ef7d";
 
@@ -34,6 +35,7 @@ module.exports = {
     bot.hears("fetch symbol (GOOG)", ctx => {
 
       yahooClient.getSymbolData("GOOG", function (data) {
+        logger.INFO(PLACEHOLDER, data)
         return ctx.reply(JSON.stringify(data))
       });
 
