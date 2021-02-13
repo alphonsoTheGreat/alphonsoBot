@@ -49,15 +49,16 @@ module.exports = {
 
     // bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
     // bot.hears(/\analyze: [A-Z]+\w+/, ctx => {
-    bot.hears(/analyze: [A-Z]/, ctx => {
+    bot.hears(/analyze: [A-Z]/g, ctx => {
 
       logger.INFO(PLACEHOLDER, "regex:1")
+
       const text = ctx.text
 
       const symbol = text.split(":")
 
 
-      return ctx.reply("fetching:" + symbol)
+      return ctx.reply(`fetching: ${symbol}`)
 
     })
 
