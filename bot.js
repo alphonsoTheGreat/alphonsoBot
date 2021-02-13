@@ -47,7 +47,8 @@ module.exports = {
 
 
 
-    bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
+    // bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
+    bot.hears(/\(analyze: [A-Z]+)\w+/, ctx => {
 
       // logger.INFO(PLACEHOLDER, ctx.)
       return ctx.reply("ok")
