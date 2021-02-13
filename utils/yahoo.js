@@ -76,7 +76,8 @@ module.exports = class YahooClient {
                 //     ...this.stockData,
                 //     [symbol]: pickedData
                 // }
-                logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
+                logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(pickedData))
+                // logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
                 return cb(pickedData)
                 // return cb(this.stockData[symbol])
 
