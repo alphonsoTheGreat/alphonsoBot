@@ -70,7 +70,7 @@ module.exports = class YahooClient {
                         jsonObject = JSON.parse(data);
 
 
-                    const pickedData = yahooDataPicker.helpers.buildSymbolStats(jsonObject)
+                    const pickedData = yahooDataPicker.buildSymbolStats(jsonObject)
                     this.stockData = {
                         ...this.stockData,
                         [symbol]: pickedData
