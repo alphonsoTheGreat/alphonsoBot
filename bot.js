@@ -49,19 +49,18 @@ module.exports = {
 
     // bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
     // bot.hears(/\analyze: [A-Z]+\w+/, ctx => {
-    bot.hears(/\/analyze: [A-Z](\w+)/, ctx => {
+    bot.hears(/analyze: [A-Z]/, ctx => {
 
       logger.INFO(PLACEHOLDER, "regex:1")
-      return ctx.reply("ok")
+      const text = ctx.text
+
+      const symbol = text.split(":")
+
+
+      return ctx.reply("fetching:" + symbol)
 
     })
-    bot.hears(/\/wrap (\d+)/, ctx => {
 
-      logger.INFO(PLACEHOLDER, "regex:2")
-      // logger.INFO(PLACEHOLDER, ctx.)
-      return ctx.reply("ok")
-
-    })
 
 
 
