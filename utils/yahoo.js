@@ -71,22 +71,26 @@ module.exports = class YahooClient {
                     if (typeof jsonObject !== "object")
                         jsonObject = JSON.parse(data);
 
-                    const pickedData = yahooDataPicker.buildSymbolStats(jsonObject)
+                    const pickedData = yahooDataPicker.buildSymbolStats(jsonObject);
+                    console.log({ pickedData });
+                    const prettyPickedData = this.pretty(pickedData);
                     this.stockData = {
                         ...this.stockData,
                         [symbol]: pickedData
                     }
                     // logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(pickedData))
                     // logger.INFO(PLACEHOLDER, "data after build:" + JSON.stringify(this.stockData[symbol]))
-                    return cb(pickedData)
+                    return cb(prettyPickedData)
                     // return cb(this.stockData[symbol])
 
 
 
                 })
             }
-            else
+            else {
+                logger.INFO(PLACEHOLDER, "fetching stock(" + symbol + ") data from memory")
                 return cb(this.stockData[symbol])
+            }
 
         }
         catch (e) {
@@ -98,12 +102,21 @@ module.exports = class YahooClient {
 
     getStocksData() {
         // logger.INFO(PLACEHOLDER, JSON.stringify(this.stockData))
-        return this.stockData
+        const data = this.stockData;
+        console.log({ getStocksData: data });
+        const stocks = Object.keys(data)
+        return stocks.map(s => this.pretty(this.stockData[s]))
     }
 
     pretty(data) {
         let keyValue = data.map(({ key, value }) => {
-            return key + ": " + value
+
+            const prettyKey = key.split("_").length > 1 ? key.split("_").join(" ") : key;
+
+            if (prettyKey.split(" ")[0] === "calc" || prettyKey.split(" ")[0] === "FCS")
+                return prettyKey + ": " + (value * 100).toFixed(3) + "%"
+
+            return prettyKey + ": " + value
 
         })
         return keyValue.join("\n")

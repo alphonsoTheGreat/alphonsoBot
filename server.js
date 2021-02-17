@@ -3,7 +3,10 @@ const express = require('express')
 const botService = require('./bot.js')
 // const botService = require('./exampleBot.js')
 
-const expressApp = express()
+if (process.env.NODE_ENV === "development")
+  require('./utils/devinit.ignore')
+
+const expressApp = express();
 
 const port = process.env.PORT || 5000 // Correct port will be returned here
 

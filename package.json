@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bot": "node bot.js",
     "server": "node server.js",
+    "devserver": "NODE_ENV=development nodemon server.js",
     "dev:bot": "node index.ignore.js",
     "start": "npm run server",
     "heroku:logs": " heroku logs -a alphonsobot -t"
@@ -21,5 +22,9 @@
     "express": "^4.17.1",
     "node-fetch": "^2.6.1",
     "telegraf": "^4.0.2"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7"
   }
 }

@@ -107,4 +107,4 @@ dist
 package-lock.json
 
 
-/**/*ignore.js
+/**/*ignore.*
