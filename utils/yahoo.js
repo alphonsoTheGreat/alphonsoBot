@@ -48,7 +48,8 @@ module.exports = class YahooClient {
                     cb(data)
                 })
                 .catch(function (e) {
-                    logger.ERROR(PLACEHOLDER, e)
+                    const data = e.response.data
+                    logger.ERROR(PLACEHOLDER, data)
 
                 })
         }
