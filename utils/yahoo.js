@@ -113,13 +113,13 @@ module.exports = class YahooClient {
 
             const prettyKey = key.split("_").length > 1 ? key.split("_").join(" ") : key;
 
-            if (prettyKey.split(" ")[0] === "calc" || prettyKey.split(" ")[0] === "FCS")
+            if (prettyKey.split(" ")[0] === "calc" || prettyKey.split(" ")[0] === "FCS" || key === yahooDataPicker.rowValueMap.FCS_CAP || key === yahooDataPicker.rowValueMap.FCS_earningsAvg)
                 return prettyKey + ": " + (value * 100).toFixed(3) + "%"
 
             return prettyKey + ": " + value
 
         })
-        return keyValue.join("\n")
+        return keyValue.join("\n\n")
 
     }
 

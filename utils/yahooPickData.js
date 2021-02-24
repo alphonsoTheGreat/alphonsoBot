@@ -1,10 +1,10 @@
 const logger = require("./logger")
 const PLACE_HOLDER = "yahooPickData.js"
 const rowValueMap = {
-    FCS_CAP: "FCS_CAP",
-    FCS_earningsAvg: "FCS_earningsAvg",
+    beta: "Beta rate",
+    FCS_CAP: "free cash flow / cap",
+    FCS_earningsAvg: "earnings/free cash flow",
     PE: "PE",
-    symbole: "symbole",
     market_cap: "market_cap",
     revenue_1Q2020: 4,
     earnings_1Q2020: 5,
@@ -23,13 +23,25 @@ const rowValueMap = {
 }
 
 
-
+const numberToPercentage = (number, afterDot = 2) => (number * 100).toFixed(afterDot)
+const earningsDateTrim = (dateString) => dateString.slice(0, 2) + dateString.slice(4, dateString.length)
 
 const extractPE = (response) => {
     try {
 
         if (response.summaryDetail.trailingPE)
             return response.summaryDetail.trailingPE.raw
+        else return "n/a"
+    } catch (e) {
+        logger.ERROR(PLACE_HOLDER, e)
+        return "n/a"
+    }
+}
+const extractBeta = (response) => {
+    try {
+
+        if (response.summaryDetail.beta)
+            return response.summaryDetail.beta.fmt
         else return "n/a"
     } catch (e) {
         logger.ERROR(PLACE_HOLDER, e)
@@ -89,6 +101,7 @@ const extractEarnings = (responseS) => {
 
         const earnings = responseS.earnings;
         if (earnings) {
+            logger.INFO(PLACE_HOLDER, JSON.stringify({ earnings }))
             const calc = earnings.financialsChart.quarterly.reduce((prev, q) => {
                 return ({
                     ...prev,
@@ -119,9 +132,14 @@ const reduceEarningObject = (earnings) => {
         return earningsKeys.reduce((prev, current) => {
 
             const Q_data = earnings[current];
-            prev.push({ key: "revenue_" + Q_data.date, value: Q_data.revenue })
-            prev.push({ key: "earnings_" + Q_data.date, value: Q_data.earnings })
-            prev.push({ key: "calc_" + Q_data.date, value: Q_data.calc })
+
+            prev.push({
+                key: earningsDateTrim(Q_data.date) + " :: rev/ear/calc", value: `${Q_data.revenue}/${Q_data.earnings}/${numberToPercentage(Q_data.calc)}%`
+            })
+
+            // prev.push({ key: "revenue_" + Q_data.date, value: Q_data.revenue })
+            // prev.push({ key: "earnings_" + Q_data.date, value: Q_data.earnings })
+            // prev.push({ key: "calc_" + Q_data.date, value: Q_data.calc })
             return prev
         }, [])
     } catch (e) {
@@ -184,6 +202,8 @@ const buildSymbolStats = (symbolData) => {
 
     const price = extractCurrentPrice(symbolData);
 
+    const beta = extractBeta(symbolData);
+
     const earningsReduced = reduceEarningObject(earningsCalc)
 
     const FCS_CAP_value = calculateFreeCashFlowOutOfMarketCap(extractFreeCashFlow(symbolData, false), extractMarketCap(symbolData, false));
@@ -193,6 +213,7 @@ const buildSymbolStats = (symbolData) => {
 
     return ([
         ...earningsReduced,
+        { key: rowValueMap.beta, value: beta },
         { key: rowValueMap.PE, value: PE },
         { key: rowValueMap.market_cap, value: marketCap },
         { key: rowValueMap.price, value: price },
@@ -205,5 +226,6 @@ const buildSymbolStats = (symbolData) => {
 }
 
 module.exports = {
-    buildSymbolStats
+    buildSymbolStats,
+    rowValueMap
 }
