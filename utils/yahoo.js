@@ -4,6 +4,7 @@
 const axios = require("axios");
 const yahooDataPicker = require("./yahooPickData");
 const { numberToPercentage } = require("./helpers")
+const urls = require("./urls")
 const logger = require("./logger");
 
 
@@ -30,7 +31,7 @@ module.exports = class YahooClient {
             const isDev = process.env.NODE_ENV === "development";
 
             if (!isDev) {
-                axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US",
+                axios.get(urls.getCashFlow + "?symbol=" + symbol + "&region=US",
                     {
                         headers: {
                             "x-rapidapi-host": this.rapidApiHost,
@@ -40,7 +41,7 @@ module.exports = class YahooClient {
                     })
                     .then(function ({ data }) {
 
-                        logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")
+                        logger.INFO(PLACEHOLDER, "fetched data from " + urls.getCashFlow + "?symbol=" + symbol + "&region=US")
                         cb(data)
                     })
                     .catch(function (e) {

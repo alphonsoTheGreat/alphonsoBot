@@ -9,15 +9,16 @@ if (process.env.NODE_ENV === "development")
 const expressApp = express();
 
 const port = process.env.PORT || 5000 // Correct port will be returned here
+const webhookUrl = process.env.WEBHOOK_BASE_URL + process.env.WEBHOOK_PATH
 
 // init the bot
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 // tell telegram our webhook
-bot.telegram.setWebhook('https://alphonsobot.herokuapp.com/bot-hook')
+bot.telegram.setWebhook(webhookUrl)
 
 // set our webhook
-expressApp.use(bot.webhookCallback('/bot-hook'))
+expressApp.use(bot.webhookCallback(process.env.WEBHOOK_PATH))
 
 botService.runBot(bot)
 

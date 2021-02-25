@@ -1,5 +1,6 @@
 const logger = require("./logger")
 const { numberToPercentage } = require("./helpers")
+const urls = require("./urls")
 
 const PLACE_HOLDER = "yahooPickData.js"
 const rowValueMap = {
@@ -39,7 +40,7 @@ const extractBeta = (response) => {
     }
 }
 
-const createYahooSymbolLink = (response) => `https://finance.yahoo.com/quote/${response.quoteType.symbol}`
+const createYahooSymbolLink = (response) => `${urls.yahooSymbolUrl}${response.quoteType.symbol}`
 
 
 const extractMarketCap = (response, formatted = true) => {
