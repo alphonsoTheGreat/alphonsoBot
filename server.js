@@ -4,7 +4,7 @@ const botService = require('./bot.js')
 // const botService = require('./exampleBot.js')
 
 if (process.env.NODE_ENV === "development")
-  require('./utils/devinit.ignore')
+  require('./utils/devinit')
 
 const expressApp = express();
 

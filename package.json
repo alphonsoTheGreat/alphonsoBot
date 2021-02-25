@@ -7,12 +7,8 @@
     "node": "14.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "bot": "node bot.js",
-    "server": "node server.js",
     "devserver": "NODE_ENV=development nodemon server.js",
-    "dev:bot": "node index.ignore.js",
-    "start": "npm run server",
+    "start": "node server.js",
     "heroku:logs": " heroku logs -a alphonsobot -t"
   },
   "author": "",
