@@ -1,29 +1,19 @@
 const logger = require("./logger")
+const { numberToPercentage } = require("./helpers")
+
 const PLACE_HOLDER = "yahooPickData.js"
 const rowValueMap = {
     beta: "Beta rate",
     FCS_CAP: "free cash flow / cap",
     FCS_earningsAvg: "earnings/free cash flow",
-    PE: "PE",
-    market_cap: "market_cap",
-    revenue_1Q2020: 4,
-    earnings_1Q2020: 5,
-    calc_1Q2020: 6,
-    revenue_2Q2020: 7,
-    earnings_2Q2020: 8,
-    calc_2Q2020: 9,
-    revenue_3Q2020: 10,
-    earnings_3Q2020: 11,
-    calc_3Q2020: 12,
-    revenue_4Q2020: 13,
-    earnings_4Q2020: 14,
-    calc_4Q2020: 15,
-    price: "price",
-    free_cash_flow: "free_cash_flow"
+    PE: "P/E",
+    link: "link",
+    market_cap: "Market cap",
+    price: "Price",
+    free_cash_flow: "Free cash flow"
 }
 
 
-const numberToPercentage = (number, afterDot = 2) => (number * 100).toFixed(afterDot)
 const earningsDateTrim = (dateString) => dateString.slice(0, 2) + dateString.slice(4, dateString.length)
 
 const extractPE = (response) => {
@@ -49,6 +39,7 @@ const extractBeta = (response) => {
     }
 }
 
+const createYahooSymbolLink = (response) => `https://finance.yahoo.com/quote/${response.quoteType.symbol}`
 
 
 const extractMarketCap = (response, formatted = true) => {
@@ -101,7 +92,7 @@ const extractEarnings = (responseS) => {
 
         const earnings = responseS.earnings;
         if (earnings) {
-            logger.INFO(PLACE_HOLDER, JSON.stringify({ earnings }))
+            // logger.INFO(PLACE_HOLDER, JSON.stringify({ earnings }))
             const calc = earnings.financialsChart.quarterly.reduce((prev, q) => {
                 return ({
                     ...prev,
@@ -210,6 +201,9 @@ const buildSymbolStats = (symbolData) => {
 
     const FCS_earningsAvg_value = calculateEarnigsAveregOutOfFreeCashFlow(extractFreeCashFlow(symbolData, false), symbolData);
 
+    const link = createYahooSymbolLink(symbolData);
+
+
 
     return ([
         ...earningsReduced,
@@ -220,6 +214,7 @@ const buildSymbolStats = (symbolData) => {
         { key: rowValueMap.free_cash_flow, value: freeCashFlow },
         { key: rowValueMap.FCS_CAP, value: FCS_CAP_value },
         { key: rowValueMap.FCS_earningsAvg, value: FCS_earningsAvg_value },
+        { key: rowValueMap.link, value: link }
     ])
 
 

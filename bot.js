@@ -1,13 +1,13 @@
 const { Telegraf, Markup } = require('telegraf');
-const logger = require('./utils/logger');
+// const logger = require('./utils/logger');
 const YahooClient = require('./utils/yahoo')
-const PLACEHOLDER = "bot.js"
+// const PLACEHOLDER = "bot.js"
 const xRapidapiHost = "apidojo-yahoo-finance-v1.p.rapidapi.com";
 const xRapidapiKey = "6c15d749bbmsh90b56ad172bf4b6p1d3d99jsnfd144084ef7d";
 
 const yahooClient = new YahooClient(xRapidapiKey, xRapidapiHost)
 
-const reg = RegExp(/analyze: [A-Z]/g);
+const reg = RegExp(/analyze: [A-Za-z]/g);
 
 module.exports = {
 
@@ -28,7 +28,6 @@ module.exports = {
     bot.command('getData', ctx => {
 
       const data = yahooClient.getStocksData();
-      console.log({ command: data });
       return ctx.reply(data)
     })
 
@@ -58,10 +57,27 @@ module.exports = {
       if (typeof symbol !== "string" || symbol.length < 3)
         return ctx.reply(`something is wrong: ${symbol[1]}`)
       else
-        yahooClient.getSymbolData(symbol, function (data) {
+        yahooClient.getSymbolData(symbol, true, function (data) {
           // logger.INFO(PLACEHOLDER, data)
-          return ctx.reply(data)
+          return ctx.replyWithHTML(data)
         });
+    })
+
+    bot.hears("test", ctx => {
+      return ctx.replyWithHTML(
+        `
+        <b>bold</b>, <strong>bold</strong>
+        <i>italic</i>, <em>italic</em>
+        <u>underline</u>, <ins>underline</ins>
+        <s>strikethrough</s>, <strike>strikethrough</strike>, <del>strikethrough</del>
+        <b>bold <i>italic bold <s>italic bold strikethrough</s> <u>underline italic bold</u></i> bold</b>
+        <a href="http://www.example.com/">inline URL</a>
+        <a href="tg://user?id=123456789">inline mention of a user</a>
+        <code>inline fixed-width code</code>
+        <pre>pre-formatted fixed-width code block</pre>
+        <pre><code class="language-python">pre-formatted fixed-width code block written in the Python programming language</code></pre>
+        `
+      )
     })
 
     if (process.env.NODE_ENV === "development")

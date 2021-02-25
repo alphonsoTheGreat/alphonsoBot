@@ -3,6 +3,7 @@
 
 const axios = require("axios");
 const yahooDataPicker = require("./yahooPickData");
+const { numberToPercentage } = require("./helpers")
 const logger = require("./logger");
 
 
@@ -26,32 +27,33 @@ module.exports = class YahooClient {
     callApi_get_cash_flow(symbol, cb) {
         try {
 
-            // const url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=GOOG&region=US"
-            // const headers = {
-            //     "x-rapidapi-host": this.rapidApiHost,
-            //     "x-rapidapi-key": this.rapidApiKey,
-            //     "useQueryString": true
-            // }
+            const isDev = process.env.NODE_ENV === "development";
 
+            if (!isDev) {
+                axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US",
+                    {
+                        headers: {
+                            "x-rapidapi-host": this.rapidApiHost,
+                            "x-rapidapi-key": this.rapidApiKey,
+                            "useQueryString": true
+                        }
+                    })
+                    .then(function ({ data }) {
 
-            axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US",
-                {
-                    headers: {
-                        "x-rapidapi-host": this.rapidApiHost,
-                        "x-rapidapi-key": this.rapidApiKey,
-                        "useQueryString": true
-                    }
-                })
-                .then(function ({ data }) {
+                        logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")
+                        cb(data)
+                    })
+                    .catch(function (e) {
+                        const data = e.response.data
+                        logger.ERROR(PLACEHOLDER, data)
 
-                    logger.INFO(PLACEHOLDER, "fetched data from https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=" + symbol + "&region=US")
-                    cb(data)
-                })
-                .catch(function (e) {
-                    const data = e.response.data
-                    logger.ERROR(PLACEHOLDER, data)
-
-                })
+                    })
+            }
+            else {
+                logger.INFO(PLACEHOLDER, "sending goog dummy data")
+                const googDummy = require("./data.GOOG.ignore");
+                cb(googDummy)
+            }
         }
         catch (e) {
             logger.ERROR(PLACEHOLDER, e)
@@ -59,7 +61,9 @@ module.exports = class YahooClient {
     }
 
 
-    getSymbolData(symbol, cb) {
+
+
+    getSymbolData(symbol, htmlStyled = false, cb) {
         try {
 
             logger.INFO(PLACEHOLDER, "in symbolData for symbol:" + symbol)
@@ -73,8 +77,7 @@ module.exports = class YahooClient {
                         jsonObject = JSON.parse(data);
 
                     const pickedData = yahooDataPicker.buildSymbolStats(jsonObject);
-                    console.log({ pickedData });
-                    const prettyPickedData = this.pretty(pickedData);
+                    const prettyPickedData = this.pretty(pickedData, htmlStyled);
                     this.stockData = {
                         ...this.stockData,
                         [symbol]: pickedData
@@ -104,22 +107,32 @@ module.exports = class YahooClient {
     getStocksData() {
         // logger.INFO(PLACEHOLDER, JSON.stringify(this.stockData))
         const data = this.stockData;
-        console.log({ getStocksData: data });
         const stocks = Object.keys(data)
-        return stocks.map(s => this.pretty(this.stockData[s]))
+        return stocks.map(s => this.pretty(this.stockData[s], true))
     }
 
-    pretty(data) {
+    pretty(data, htmlStyled) {
+        const valuesNeedConversionToPercentage = [yahooDataPicker.rowValueMap.FCS_earningsAvg, yahooDataPicker.rowValueMap.FCS_CAP]
+        const bold = (s) => "<b>" + s + "</b>";
+        const underline = (s) => "<u>" + s + "</u>";
+        const italic = (s) => "<i>" + s + "</i>";
+        const link = (url, str) => "<a href='" + url + "'>" + str + "</a>";
+
+
+
         let keyValue = data.map(({ key, value }) => {
 
-            const prettyKey = key.split("_").length > 1 ? key.split("_").join(" ") : key;
 
-            if (prettyKey.split(" ")[0] === "calc" || prettyKey.split(" ")[0] === "FCS" || key === yahooDataPicker.rowValueMap.FCS_CAP || key === yahooDataPicker.rowValueMap.FCS_earningsAvg)
-                return prettyKey + ": " + (value * 100).toFixed(3) + "%"
+            if (valuesNeedConversionToPercentage.indexOf(key) > -1)
+                return `${htmlStyled ? underline(bold(key)) : key} : ${numberToPercentage(value)}%`
 
-            return prettyKey + ": " + value
+            else if (key === yahooDataPicker.rowValueMap.link)
+                return `${htmlStyled ? link(value, key) : key + ": " + value}`
+
+            return `${htmlStyled ? underline(bold(key)) : key}: ${value} `
 
         })
+
         return keyValue.join("\n\n")
 
     }
