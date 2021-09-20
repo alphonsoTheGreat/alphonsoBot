@@ -1,9 +1,10 @@
 const { Telegraf } = require('telegraf')
 const express = require('express')
 const botService = require('./bot.js')
+const { consts } = require('./utils')
 // const botService = require('./exampleBot.js')
 
-if (process.env.NODE_ENV === "development")
+if (process.env.NODE_ENV === consts.env.development)
   require('./utils/devinit')
 
 const expressApp = express();

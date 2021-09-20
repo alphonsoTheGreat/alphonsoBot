@@ -1,7 +1,6 @@
 const { Telegraf } = require('telegraf');
-// const logger = require('./utils/logger');
+const { consts } = require('./utils');
 const YahooClient = require('./utils/yahoo')
-// const PLACEHOLDER = "bot.js"
 const xRapidapiHost = process.env.RAPID_HOST;
 const xRapidapiKey = process.env.RAPID_KEY;
 
@@ -80,7 +79,7 @@ module.exports = {
       )
     })
 
-    if (process.env.NODE_ENV === "development")
+    if (process.env.NODE_ENV === consts.env.development)
       bot.launch()
 
 
