@@ -9,7 +9,8 @@
   "scripts": {
     "devserver": "NODE_ENV=development nodemon server.js",
     "start": "node server.js",
-    "heroku:logs": " heroku logs -a alphonsobot -t"
+    "heroku:logs": " heroku logs -a alphonsobot -t",
+    "heroku:deploy": "git push heroku main"
   },
   "author": "",
   "license": "ISC",

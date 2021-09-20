@@ -32,3 +32,7 @@ Make sure you:
 for development run ```npm run devserver```
 
 for production run ```npm run start```
+
+
+----
+HEROKU deployment:
