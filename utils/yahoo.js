@@ -4,7 +4,7 @@
 const axios = require("axios");
 const yahooDataPicker = require("./yahooPickData");
 const { numberToPercentage } = require("./helpers")
-const urls = require("./urls")
+const { consts } = require("./../utils")
 const logger = require("./logger");
 
 
@@ -28,10 +28,10 @@ module.exports = class YahooClient {
     callApi_get_cash_flow(symbol, cb) {
         try {
 
-            const isDev = process.env.NODE_ENV === "development";
+            const isDev = process.env.NODE_ENV === consts.env.development;
 
             if (!isDev) {
-                axios.get(urls.getCashFlow + "?symbol=" + symbol + "&region=US",
+                axios.get(consts.urls.getCashFlow + "?symbol=" + symbol + "&region=US",
                     {
                         headers: {
                             "x-rapidapi-host": this.rapidApiHost,
@@ -41,7 +41,7 @@ module.exports = class YahooClient {
                     })
                     .then(function ({ data }) {
 
-                        logger.INFO(PLACEHOLDER, "fetched data from " + urls.getCashFlow + "?symbol=" + symbol + "&region=US")
+                        logger.INFO(PLACEHOLDER, "fetched data from " + consts.urls.getCashFlow + "?symbol=" + symbol + "&region=US")
                         cb(data)
                     })
                     .catch(function (e) {
@@ -113,7 +113,7 @@ module.exports = class YahooClient {
     }
 
     pretty(data, htmlStyled) {
-        const valuesNeedConversionToPercentage = [yahooDataPicker.rowValueMap.FCS_earningsAvg, yahooDataPicker.rowValueMap.FCS_CAP]
+        const valuesNeedConversionToPercentage = [consts.stockParams.FCS_earningsAvg, consts.stockParams.FCS_CAP]
         const bold = (s) => "<b>" + s + "</b>";
         const underline = (s) => "<u>" + s + "</u>";
         const italic = (s) => "<i>" + s + "</i>";
@@ -127,7 +127,7 @@ module.exports = class YahooClient {
             if (valuesNeedConversionToPercentage.indexOf(key) > -1)
                 return `${htmlStyled ? underline(bold(key)) : key} : ${numberToPercentage(value)}%`
 
-            else if (key === yahooDataPicker.rowValueMap.link)
+            else if (key === consts.stockParams.link)
                 return `${htmlStyled ? link(value, key) : key + ": " + value}`
 
             return `${htmlStyled ? underline(bold(key)) : key}: ${value} `
@@ -141,4 +141,4 @@ module.exports = class YahooClient {
 
 
 
-} 
+}

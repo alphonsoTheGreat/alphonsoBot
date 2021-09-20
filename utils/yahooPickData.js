@@ -1,18 +1,9 @@
 const logger = require("./logger")
 const { numberToPercentage } = require("./helpers")
-const urls = require("./urls")
+const { consts } = require("./../utils")
+// const urls = require("./urls")
 
 const PLACE_HOLDER = "yahooPickData.js"
-const rowValueMap = {
-    beta: "Beta rate",
-    FCS_CAP: "free cash flow / cap",
-    FCS_earningsAvg: "earnings/free cash flow",
-    PE: "P/E",
-    link: "link",
-    market_cap: "Market cap",
-    price: "Price",
-    free_cash_flow: "Free cash flow"
-}
 
 
 const earningsDateTrim = (dateString) => dateString.slice(0, 2) + dateString.slice(4, dateString.length)
@@ -40,7 +31,7 @@ const extractBeta = (response) => {
     }
 }
 
-const createYahooSymbolLink = (response) => `${urls.yahooSymbolUrl}${response.quoteType.symbol}`
+const createYahooSymbolLink = (response) => `${consts.urls.yahooSymbolUrl}${response.quoteType.symbol}`
 
 
 const extractMarketCap = (response, formatted = true) => {
@@ -208,20 +199,19 @@ const buildSymbolStats = (symbolData) => {
 
     return ([
         ...earningsReduced,
-        { key: rowValueMap.beta, value: beta },
-        { key: rowValueMap.PE, value: PE },
-        { key: rowValueMap.market_cap, value: marketCap },
-        { key: rowValueMap.price, value: price },
-        { key: rowValueMap.free_cash_flow, value: freeCashFlow },
-        { key: rowValueMap.FCS_CAP, value: FCS_CAP_value },
-        { key: rowValueMap.FCS_earningsAvg, value: FCS_earningsAvg_value },
-        { key: rowValueMap.link, value: link }
+        { key: consts.stockParams.beta, value: beta },
+        { key: consts.stockParams.PE, value: PE },
+        { key: consts.stockParams.market_cap, value: marketCap },
+        { key: consts.stockParams.price, value: price },
+        { key: consts.stockParams.free_cash_flow, value: freeCashFlow },
+        { key: consts.stockParams.FCS_CAP, value: FCS_CAP_value },
+        { key: consts.stockParams.FCS_earningsAvg, value: FCS_earningsAvg_value },
+        { key: consts.stockParams.link, value: link }
     ])
 
 
 }
 
 module.exports = {
-    buildSymbolStats,
-    rowValueMap
+    buildSymbolStats
 }
