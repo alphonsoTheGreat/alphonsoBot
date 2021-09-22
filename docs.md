@@ -1,4 +1,4 @@
-###### documentation 
+###### **Documentation** 
 
 ##### Development
 make sure you add the following bars:
@@ -20,3 +20,9 @@ make sure you 'npm install'
 
 
 ##### Bot
+1. get stock data
+2. compare 2 stocks key statistics 
+3. get stock google trends stats 
+4. get top stock gainer
+5. get loosing stocks
+6. stock screener 
