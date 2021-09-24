@@ -4,19 +4,13 @@
 const axios = require("axios");
 const yahooDataPicker = require("./yahooPickData");
 const { numberToPercentage } = require("./helpers")
-const { consts } = require("./../utils")
+const { consts } = require(".")
 const logger = require("./logger");
 
 
 const PLACEHOLDER = "yahoo.js"
-// Example 1: Creating a new class (declaration-form)
-// ===============================================================
 
-// A base class is defined using the new reserved 'class' keyword
 module.exports = class YahooClient {
-    // ..and an (optional) custom class constructor. If one is
-    // not supplied, a default constructor is used instead:
-    // constructor() { }
     constructor(rapidApiKey, rapidApiHost) {
         this.rapidApiKey = rapidApiKey;
         this.rapidApiHost = rapidApiHost;

@@ -1,6 +1,6 @@
 const logger = require("./logger")
 const { numberToPercentage } = require("./helpers")
-const { consts } = require("./../utils")
+const { consts } = require(".")
 // const urls = require("./urls")
 
 const PLACE_HOLDER = "yahooPickData.js"
