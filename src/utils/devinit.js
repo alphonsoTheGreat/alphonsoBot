@@ -1,2 +1,2 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: "./utils/dev.env" });
+module.exports = async () => await dotenv.config({ path: "./src/utils/dev.env" });

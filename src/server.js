@@ -1,15 +1,13 @@
 const { Telegraf } = require('telegraf')
 const express = require('express')
 const botService = require('./bot.js')
-const { consts } = require('./utils')
-// const botService = require('./exampleBot.js')
 
-if (process.env.NODE_ENV === consts.env.development)
-  require('./utils/devinit')
 
-const expressApp = express();
+
+const server = express();
 
 const port = process.env.PORT || 5000 // Correct port will be returned here
+
 const webhookUrl = process.env.WEBHOOK_BASE_URL + process.env.WEBHOOK_PATH
 
 // init the bot
@@ -19,11 +17,16 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 bot.telegram.setWebhook(webhookUrl)
 
 // set our webhook
-expressApp.use(bot.webhookCallback(process.env.WEBHOOK_PATH))
+server.use(bot.webhookCallback(process.env.WEBHOOK_PATH))
 
 botService.runBot(bot)
 
 
-expressApp.listen(port, () => {
+server.listen(port, () => {
   console.log(`bot is listening on port ${port}!`)
 })
+
+
+
+
+

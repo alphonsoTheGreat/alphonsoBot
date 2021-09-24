@@ -1,10 +1,9 @@
 const { Telegraf } = require('telegraf');
 const { consts } = require('./utils');
-const YahooClient = require('./utils/yahoo')
-const xRapidapiHost = process.env.RAPID_HOST;
-const xRapidapiKey = process.env.RAPID_KEY;
+const { stocksProvider } = require('./DataProviders')
 
-const yahooClient = new YahooClient(xRapidapiKey, xRapidapiHost)
+
+const yahooClientV2 = new stocksProvider.rapidStockProvider()
 
 const reg = RegExp(/analyze: [A-Za-z]/g);
 
@@ -14,39 +13,11 @@ module.exports = {
 
     bot.use(Telegraf.log())
 
-    // bot.command('stock', async (ctx) => {
-    //   return await ctx.reply('pick action', Markup
-    //     .keyboard([
-    //       ['get data', 'fetch symbol (GOOG)']
-    //     ])
-    //     .oneTime()
-    //     .resize()
-    //   )
-    // })
-
     bot.command('getData', ctx => {
 
       const data = yahooClient.getStocksData();
       return ctx.reply(data)
     })
-
-    // bot.hears("fetch symbol (GOOG)", ctx => {
-
-    //   yahooClient.getSymbolData("GOOG", function (data) {
-    //     // logger.INFO(PLACEHOLDER, data)
-    //     return ctx.reply(yahooClient.pretty(data))
-    //   });
-
-
-
-    // return ctx.reply(JSON.stringify(data))
-
-    // })
-
-
-
-    // bot.hears("\(analyze: [A-Z]+)\w+", ctx => {
-    // bot.hears(/\analyze: [A-Z]+\w+/, ctx => {
 
     bot.hears(reg, ctx => {
 
@@ -77,6 +48,11 @@ module.exports = {
         <pre><code class="language-python">pre-formatted fixed-width code block written in the Python programming language</code></pre>
         `
       )
+    })
+
+    bot.hears("itay",async ctx => {
+      const res = await yahooClientV2.fetchStockSummary("GOOG");
+      console.log({res});
     })
 
     if (process.env.NODE_ENV === consts.env.development)

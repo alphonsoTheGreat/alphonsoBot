@@ -1,22 +1,22 @@
-const { axiosManager, consts } = require("./../../utils")
-
-
 'use strict';
 
 
+const { axiosManager, consts, yahoo, logger } = require("./../../utils")
 const axios = require("axios");
-const yahooDataPicker = require("./yahooPickData");
-const { numberToPercentage } = require("./helpers")
-const logger = require("./logger");
 
 
 const PLACEHOLDER = "yahoo.js"
 
 module.exports = class YahooClient {
-    constructor(rapidApiKey, rapidApiHost) {
 
-        this.rapidApiKey = rapidApiKey;
-        this.rapidApiHost = rapidApiHost;
+    constructor() {
+
+
+        const xRapidapiHost = process.env.RAPID_HOST;
+        const xRapidapiKey = process.env.RAPID_KEY;
+
+        this.rapidApiKey = xRapidapiKey;
+        this.rapidApiHost = xRapidapiHost;
 
         this.dataProvider = axiosManager.createInstance(
             consts.urls.rapidYahooBaseUrl,
@@ -36,10 +36,10 @@ module.exports = class YahooClient {
     async fetchStockSummary(symbol) {
         try {
 
-            const response = await this.dataProvider.get("stock/v2/get-summary", {
+            const response = await this.dataProvider.get("get-summary", {
                 params: { symbol, region: 'US' },
             })
-
+            return response
 
 
         } catch (e) {
@@ -49,6 +49,7 @@ module.exports = class YahooClient {
     }
 
 
+    // ----------------------------------------
 
     callApi_get_cash_flow(symbol, cb) {
         try {
@@ -102,7 +103,7 @@ module.exports = class YahooClient {
                     if (typeof jsonObject !== "object")
                         jsonObject = JSON.parse(data);
 
-                    const pickedData = yahooDataPicker.buildSymbolStats(jsonObject);
+                    const pickedData = yahoo.yahooPickData.buildSymbolStats(jsonObject);
                     const prettyPickedData = this.pretty(pickedData, htmlStyled);
                     this.stockData = {
                         ...this.stockData,
@@ -137,6 +138,7 @@ module.exports = class YahooClient {
         return stocks.map(s => this.pretty(this.stockData[s], true))
     }
 
+
     pretty(data, htmlStyled) {
         const valuesNeedConversionToPercentage = [consts.stockParams.FCS_earningsAvg, consts.stockParams.FCS_CAP]
         const bold = (s) => "<b>" + s + "</b>";
@@ -162,8 +164,6 @@ module.exports = class YahooClient {
         return keyValue.join("\n\n")
 
     }
-
-
 
 
 }
