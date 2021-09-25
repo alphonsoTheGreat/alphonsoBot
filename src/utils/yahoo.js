@@ -4,7 +4,7 @@
 const axios = require("axios");
 const yahooDataPicker = require("./yahooPickData");
 const { numberToPercentage } = require("./helpers")
-const { consts } = require(".")
+const consts  = require("./consts")
 const logger = require("./logger");
 
 

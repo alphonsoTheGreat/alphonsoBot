@@ -1,7 +1,10 @@
 'use strict';
 
 
-const { axiosManager, consts, yahoo, logger } = require("./../../utils")
+const consts = require("./../../utils/consts")
+const logger = require("./../../utils/logger")
+const yahoo = require("./../../utils/yahoo")
+const axiosManager = require("./../../utils/axios")
 const axios = require("axios");
 
 
@@ -49,17 +52,17 @@ module.exports = class YahooClient {
     }
 
     // TODO: implement
-    fetchTopGainers(){
+    fetchTopGainers() {
 
     }
 
     // TODO: implement
-    fetchTopLosers(){
+    fetchTopLosers() {
 
     }
 
     // TODO: implement
-    fetchStockSummaryBatch(symbolsArray){
+    fetchStockSummaryBatch(symbolsArray) {
 
     }
 
