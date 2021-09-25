@@ -3,7 +3,7 @@ const { consts } = require('./utils');
 const { stocksProvider } = require('./DataProviders')
 
 
-const yahooClientV2 = new stocksProvider.rapidStockProvider()
+const yahooClientV2 = new stocksProvider()
 
 const reg = RegExp(/analyze: [A-Za-z]/g);
 
