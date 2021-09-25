@@ -1,5 +1,3 @@
 const rapidStockProvider = require("./rapidProvider")
 
-module.exports = {
-    rapidStockProvider
-}
+module.exports = rapidStockProvider

@@ -2,13 +2,12 @@
   "name": "telgrambot",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "src/index.js",
   "engines": {
     "node": "14.x"
   },
   "scripts": {
-    "devserver": "NODE_ENV=development nodemon server.js",
-    "devserver1": "NODE_ENV=development nodemon src/init.js",
+    "devserver": "NODE_ENV=development nodemon src/index.js",
     "start": "node server.js",
     "heroku:logs": " heroku logs -a alphonsobot -t",
     "heroku:deploy": "git push heroku main"

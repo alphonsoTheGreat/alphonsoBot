@@ -32,7 +32,7 @@ module.exports = class YahooClient {
         }
     }
 
-
+    // TODO: create a interceptor for reshaping the data retuning from yahoo
     async fetchStockSummary(symbol) {
         try {
 
@@ -47,6 +47,24 @@ module.exports = class YahooClient {
         }
 
     }
+
+    // TODO: implement
+    fetchTopGainers(){
+
+    }
+
+    // TODO: implement
+    fetchTopLosers(){
+
+    }
+
+    // TODO: implement
+    fetchStockSummaryBatch(symbolsArray){
+
+    }
+
+
+
 
 
     // ----------------------------------------
